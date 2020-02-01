@@ -1,9 +1,6 @@
 #%%
 #read dataset
 import pandas as pd
-import numpy as numpy
-import matplotlib.pyplot as plt
-from sklearn.naive_bayes import GaussianNB 
 
 data = pd.read_csv('breast-cancer(3).csv')
 print(data)
@@ -48,6 +45,7 @@ print("class : " ,cl_train)
 
 # %%
 #Naive Bayes was here (with Gaussian Naive Bayes)
+from sklearn.naive_bayes import GaussianNB 
 
 mod = GaussianNB()
 mod.fit(f_train,cl_train)
