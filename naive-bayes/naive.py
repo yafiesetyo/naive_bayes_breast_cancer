@@ -34,21 +34,27 @@ cl = c.tolist()
 features=zip(age,menopause,tumor_size,inv_nodes,node_caps,deg_malig,breast,breast_quad,irradiat)
 feat = list(features)
 print(cl)
+print(feat)
 
 #%%
-#split into training set and test set
+#split into training set,validation set, and test set
 from sklearn.model_selection import train_test_split as tr
+import math
 
-f_train,f_test,cl_train,cl_test = tr(feat,cl, test_size = 0.3, random_state = 0)
-print("attribute train : ",f_train)
-print("class train : " ,cl_train)
+f_train,f_test,cl_train,cl_test = tr(feat,cl, test_size = 0.3, random_state = 42)
+l = len(f_train)*0.3
+length = math.ceil(l)
+f_val,cl_val = [],[]
+f_val = f_train[length:]
+cl_val = cl_train[length:]
+print(cl_val,f_val)
 
 # %%
 #Naive Bayes was here (with Gaussian Naive Bayes)
 
 mod = GaussianNB()
 mod.fit(f_train,cl_train)
-pred = mod.predict(f_test)
+pred = mod.predict(f_val)
 pred
 
 # %%
@@ -56,15 +62,23 @@ pred
 
 from sklearn.metrics import f1_score as skor
 
-skor(cl_test,pred,average='macro')
+skor(cl_val,pred,average='macro')
 
 # %%
 # accuracy count
 
 from sklearn.metrics import accuracy_score as acc
 
-acc(cl_test,pred)
-
+acc(cl_val,pred)
 
 
 # %%
+#now for the truth... we test that model with test set
+
+pred_real = mod.predict(f_test)
+acc(cl_test,pred_real)
+
+
+
+
+
