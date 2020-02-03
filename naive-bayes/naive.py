@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB 
 
 data = pd.read_csv('breast-cancer(3).csv')
-
+data
 
 # %%
 #search wrong values (?) then drop them (drop column)
@@ -42,18 +42,22 @@ from sklearn.model_selection import train_test_split as tr
 import math
 
 f_train,f_test,cl_train,cl_test = tr(feat,cl, test_size = 0.3, random_state = 42)
-l = len(f_train)*0.3
-length = math.ceil(l)
-f_val,cl_val = [],[]
+l2 = len(f_train)*0.8
+length = math.ceil(l2)
+f_val,cl_val,fn_train,cln_train = [],[],[],[]
 f_val = f_train[length:]
 cl_val = cl_train[length:]
-print(cl_val,f_val)
-
+fn_train = f_train[0:length]
+cln_train = cl_train[0:length]
+print('class validation',len(cl_val))
+print('att validation : ',len(f_val))
+print('att train : ',len(fn_train))
+print('class train : ',len(cln_train))
 # %%
 #Naive Bayes was here (with Gaussian Naive Bayes)
 
 mod = GaussianNB()
-mod.fit(f_train,cl_train)
+mod.fit(fn_train,cln_train)
 pred = mod.predict(f_val)
 pred
 
@@ -77,8 +81,12 @@ acc(cl_val,pred)
 
 pred_real = mod.predict(f_test)
 acc(cl_test,pred_real)
+skor(cl_test,pred_real,average='macro')
 
 
 
 
 
+
+
+# %%
